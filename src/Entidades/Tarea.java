@@ -27,7 +27,7 @@ public class Tarea {
         return tpo_ejecucion;
     }
 
-    public boolean isEs_critica() {
+    public boolean Es_critica() {
         return es_critica;
     }
 

@@ -2,6 +2,7 @@ import Entidades.Procesador;
 import Entidades.Tarea;
 import utils.CSVReader;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -27,24 +28,37 @@ public class Servicios {
     }
 
     /*
-     * Expresar la complejidad temporal del servicio 1.
+     * Expresar la complejidad temporal del servicio 1: O(1)
      */
+
     public Tarea servicio1(String ID) {
-        return null;
+        return tareas.get(ID);
     }
 
     /*
-     * Expresar la complejidad temporal del servicio 2.
+     * Expresar la complejidad temporal del servicio 2: O(n)
      */
-    public List<Tarea> servicio2(boolean esCritica) {
-        return null;
+
+
+    public List<Tarea> servicio2(boolean criticidad) {
+        List<Tarea> resultado= new ArrayList<>();
+        for (Tarea t: tareas.values()){
+            if(t.Es_critica() == criticidad)
+                resultado.add(t);
+        }
+        return resultado;
     }
 
     /*
-     * Expresar la complejidad temporal del servicio 3.
+     * Expresar la complejidad temporal del servicio 3: O(n)
      */
     public List<Tarea> servicio3(int prioridadInferior, int prioridadSuperior) {
-        return null;
+        List<Tarea> resultado= new ArrayList<>();
+        for (Tarea t: tareas.values()){
+            if(t.getPrioridad() >= prioridadInferior && t.getPrioridad() <= prioridadSuperior)
+                resultado.add(t);
+        }
+        return resultado;
     }
 
     public void imprimir_tareas() {
