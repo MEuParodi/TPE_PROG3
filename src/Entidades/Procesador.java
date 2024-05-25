@@ -1,16 +1,61 @@
 package Entidades;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Procesador {
     private String id_procesador;
     private String codigo;
     private boolean refrigerado;
     private int anio;
+    private List<Tarea>tareas;
+    private Integer tiempoTotal;
+    private Integer cantCriticas;
+    private Integer x; //tiempo limite para no refrig
+
 
     public Procesador(String id_procesador, String codigo, boolean refrigerado, int anio) {
         this.id_procesador = id_procesador;
         this.codigo = codigo;
         this.refrigerado = refrigerado;
         this.anio = anio;
+        this.tareas=new ArrayList<>();
+    }
+
+    public Integer getTiempoTotal() {
+        return tiempoTotal;
+    }
+
+    public List<Tarea> getTareas() {
+        return new ArrayList<>(this.tareas);
+    }
+    public boolean agregarTarea(Tarea t){
+        if(t.Es_critica() && this.cantCriticas>=2){
+            return false;
+        }
+        if(!this.refrigerado) {
+               if (tiempoTotal+t.getTpo_ejecucion()<=x){
+                  return false;
+            }
+        }
+        this.tareas.add(t);
+        cantCriticas++;
+        this.tiempoTotal+=t.getTpo_ejecucion();
+        return true;
+    }
+    public void quitarTarea(Tarea t){
+        this.tareas.remove(t);
+        this.tiempoTotal-=t.getTpo_ejecucion();
+    }
+    public void setXParaNoRefrigerado(Integer x){
+        this.x=x;
+    }
+    public boolean puedoAgregarPorTiempo(int tiempoTarea){
+            if (this.tiempoTotal+tiempoTarea>this.x){
+                return false;
+            }
+
+        return true;
     }
 
     public String getId_procesador() {
