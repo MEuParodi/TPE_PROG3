@@ -20,6 +20,8 @@ public class Procesador {
         this.refrigerado = refrigerado;
         this.anio = anio;
         this.tareas=new ArrayList<>();
+        this.cantCriticas = 0;
+        this.tiempoTotal = 0;
     }
 
     public Integer getTiempoTotal() {
@@ -29,6 +31,7 @@ public class Procesador {
     public List<Tarea> getTareas() {
         return new ArrayList<>(this.tareas);
     }
+
     public boolean agregarTarea(Tarea t){
         if(t.Es_critica() && this.cantCriticas>=2){
             return false;
@@ -39,14 +42,21 @@ public class Procesador {
             }
         }
         this.tareas.add(t);
-        cantCriticas++;
+        if(t.Es_critica()){
+            cantCriticas++;
+        }
         this.tiempoTotal+=t.getTpo_ejecucion();
         return true;
     }
+
     public void quitarTarea(Tarea t){
         this.tareas.remove(t);
         this.tiempoTotal-=t.getTpo_ejecucion();
+        if(t.Es_critica()){
+            cantCriticas --;
+        }
     }
+
     public void setXParaNoRefrigerado(Integer x){
         this.x=x;
     }
@@ -56,6 +66,10 @@ public class Procesador {
             }
 
         return true;
+    }
+
+    public Integer getCantDeCriticas(){
+        return this.cantCriticas;
     }
 
     public String getId_procesador() {
@@ -88,5 +102,10 @@ public class Procesador {
 
     public void setAnio(int anio) {
         this.anio = anio;
+    }
+
+    @Override
+    public String toString() {
+        return id_procesador;
     }
 }
