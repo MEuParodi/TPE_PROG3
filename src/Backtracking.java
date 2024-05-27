@@ -12,8 +12,10 @@ public class Backtracking {
     private HashMap<Procesador, List<Tarea>> mejorAsignacion;
    // private List<Integer>tiemposPorProcesador;
     private Integer mejorTiempo;
+    private int contadorEstados;
 
     public Backtracking(String pathProcesadores, String pathTareas, Integer x){
+        this.contadorEstados=0;
         this.mejorTiempo=Integer.MAX_VALUE;
         this.mejorAsignacion=new HashMap<>();
         CSVReader reader = new CSVReader();
@@ -40,6 +42,7 @@ public class Backtracking {
 
     private void backtrack(HashMap<Procesador,List<Tarea>> asignacionParcial, Integer mejorTiempoParcial, Integer index){
         //si llegue al final
+
         if(index==(tareas.size()) || (todosLosProcesadoresTienen2Criticas() )){
             System.out.println(" entre al if de corte ## Mejor Tiempo Parcial: " + mejorTiempoParcial + "----" );
             if (mejorTiempoParcial < this.mejorTiempo){
@@ -73,8 +76,11 @@ public class Backtracking {
 
                     int nuevoMejorTiempoParcial = Math.max(mejorTiempoParcial, tiempoProcesadorActual);// Actualiza el mejor tiempo parcial
                    //backtrack
-                   backtrack(asignacionParcial, nuevoMejorTiempoParcial, index + 1);
+                    contadorEstados++;
 
+                    if(nuevoMejorTiempoParcial<mejorTiempo) {//posible poda
+                        backtrack(asignacionParcial, nuevoMejorTiempoParcial, index + 1);
+                    }
                    //deshacer cambios
                    asignacionParcial.get(p).remove(tareaActual);
                    //mejorTiempoParcial -= tareaActual.getTpo_ejecucion();
@@ -99,5 +105,6 @@ public class Backtracking {
     public void imprimirSolucion(){
         System.out.println("Mínimo Tiempo Máximo: " + mejorTiempo);
         System.out.println("Mejor Asignación: " + mejorAsignacion);
+        System.out.println("Cantidad de estados generados: " + contadorEstados);
     }
 }
