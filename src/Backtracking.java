@@ -60,19 +60,24 @@ public class Backtracking {
             Tarea tareaActual = this.tareas.get(index);
             for (Procesador p : procesadores){
                 if( p.agregarTarea(tareaActual)) {
-                   // Inicializar la lista de tareas para el procesador si no existe
-                   asignacionParcial.putIfAbsent(p, new ArrayList<>());
-                   // Agregar la tarea actual a la lista de tareas del procesador
-                   asignacionParcial.get(p).add(tareaActual);
-                    System.out.println("Asignacion Parcial: " + asignacionParcial);
-                   mejorTiempoParcial += tareaActual.getTpo_ejecucion();
 
+                   asignacionParcial.putIfAbsent(p, new ArrayList<>());// Inicializar la lista de tareas para el procesador si no existe
+
+                   asignacionParcial.get(p).add(tareaActual);// Agregar la tarea actual a la lista de tareas del procesador
+                    System.out.println("Asignacion Parcial: " + asignacionParcial);
+
+                   //mejorTiempoParcial += tareaActual.getTpo_ejecucion();
+
+                    int tiempoProcesadorActual = p.getTiempoTotal();
+
+
+                    int nuevoMejorTiempoParcial = Math.max(mejorTiempoParcial, tiempoProcesadorActual);// Actualiza el mejor tiempo parcial
                    //backtrack
-                   backtrack(asignacionParcial, mejorTiempoParcial, index + 1);
+                   backtrack(asignacionParcial, nuevoMejorTiempoParcial, index + 1);
 
                    //deshacer cambios
                    asignacionParcial.get(p).remove(tareaActual);
-                   mejorTiempoParcial -= tareaActual.getTpo_ejecucion();
+                   //mejorTiempoParcial -= tareaActual.getTpo_ejecucion();
                    p.quitarTarea(tareaActual);
                }
             }

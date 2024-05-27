@@ -37,7 +37,7 @@ public class Procesador {
             return false;
         }
         if(!this.refrigerado) {
-               if (tiempoTotal+t.getTpo_ejecucion()<=x){
+               if (tiempoTotal+t.getTpo_ejecucion()>x){//<=
                   return false;
             }
         }
