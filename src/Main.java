@@ -1,3 +1,5 @@
+import Entidades.Tarea;
+
 public class Main {
 
     public static void main(String args[]) {
@@ -10,10 +12,17 @@ public class Main {
      //   System.out.println("Tareas no críticas: \n" + servicios.servicio2(false));
      //   System.out.println("Tareas con prioridad entre 70 y 100: \n" + servicios.servicio3(70,100));
 
-        Backtracking backTracking = new Backtracking(pathProcesadores,pathTareas, 2000);
-        backTracking.buscarMejorSolucion();
-        backTracking.imprimirSolucion();
+        //Backtracking backTracking = new Backtracking(pathProcesadores,pathTareas, 2000);
+        //backTracking.buscarMejorSolucion();
+        //backTracking.imprimirSolucion();
 
+        Greedy greedy = new Greedy(pathProcesadores, pathTareas,2000);
+
+        // Buscar la mejor solución
+        greedy.buscarMejorSolucion();
+
+        // Imprimir la solución
+        greedy.imprimirSolucion();
 
     }
 
