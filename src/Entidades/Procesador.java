@@ -32,21 +32,26 @@ public class Procesador {
         return new ArrayList<>(this.tareas);
     }
 
-    public boolean agregarTarea(Tarea t){
-        if(t.Es_critica() && this.cantCriticas>=2){
+    public void agregarTarea(Tarea t){
+        if(this.puedoAgregarTarea(t)){
+            this.tareas.add(t);
+            if(t.Es_critica()){
+                cantCriticas++;
+            }
+            this.tiempoTotal+=t.getTpo_ejecucion();
+        }
+    }
+    public boolean puedoAgregarTarea(Tarea t){
+        if(t.Es_critica() && this.getCantDeCriticas()>=2) {
             return false;
         }
         if(!this.refrigerado) {
-               if (tiempoTotal+t.getTpo_ejecucion()>x){//<=
-                  return false;
+            if (tiempoTotal+t.getTpo_ejecucion()>x){//<=
+                return false;
             }
         }
-        this.tareas.add(t);
-        if(t.Es_critica()){
-            cantCriticas++;
-        }
-        this.tiempoTotal+=t.getTpo_ejecucion();
         return true;
+
     }
 
     public void quitarTarea(Tarea t){

@@ -10,7 +10,6 @@ public class Backtracking {
     private List<Tarea>tareas;
     private List<Procesador> procesadores;
     private HashMap<Procesador, List<Tarea>> mejorAsignacion;
-   // private List<Integer>tiemposPorProcesador;
     private Integer mejorTiempo;
     private int contadorEstados;
 
@@ -22,16 +21,20 @@ public class Backtracking {
         HashMap<String, Procesador> procesadoresReader = reader.readProcessors(pathProcesadores);
         HashMap<String, Tarea> tareasReader = reader.readTasks(pathTareas);
         this.tareas = new ArrayList<>(tareasReader.values());
-        for (Tarea t : tareas)
-            System.out.println(t.toString());
+       /* for (Tarea t : tareas)
+            System.out.println(t.toString());*/
         this.procesadores = new ArrayList<>(procesadoresReader.values());
         for (Procesador p :procesadores) {
             if (!p.isRefrigerado()) {
                 p.setXParaNoRefrigerado(x);
             }
-            //    System.out.println(p.toString());
         }
     }
+    /*Recorremos los procesadores, y si es posible agregarles la tarea teniendo en cuenta las restricciones de la consigna,
+    * la agregamos al procesador en la asignacion parcial, obtenemos el nuevo mejor tiempo parcial que es el maximo entre
+    * el mayor tiempo de los procesadores de la asigancion actual y el del procesador actual.
+    * Implementamos una poda, solo se realiza el llamado recursivo a backtrack si el tiempo parcial es menor al
+    * mejor tiempo encontrado.  */
 
     public HashMap<Procesador, List<Tarea>> buscarMejorSolucion(){
         HashMap<Procesador, List<Tarea>> asignacionParcial= new HashMap<>();
@@ -42,9 +45,7 @@ public class Backtracking {
 
     private void backtrack(HashMap<Procesador,List<Tarea>> asignacionParcial, Integer mejorTiempoParcial, Integer index){
         //si llegue al final
-
         if(index==(tareas.size()) || (todosLosProcesadoresTienen2Criticas() )){
-            System.out.println(" entre al if de corte ## Mejor Tiempo Parcial: " + mejorTiempoParcial + "----" );
             if (mejorTiempoParcial < this.mejorTiempo){
                 this.mejorTiempo = mejorTiempoParcial;
                 this.mejorAsignacion = new HashMap<>(asignacionParcial);
@@ -54,25 +55,17 @@ public class Backtracking {
                     List<Tarea> tareas = new ArrayList<>(entry.getValue());
                     this.mejorAsignacion.put(procesador, tareas);
                 }
-
             }
         }
-
         else {
-            System.out.println("entre en el else de backtrack");
             Tarea tareaActual = this.tareas.get(index);
             for (Procesador p : procesadores){
-                if( p.agregarTarea(tareaActual)) {
-
+                if( p.puedoAgregarTarea(tareaActual)) {
                    asignacionParcial.putIfAbsent(p, new ArrayList<>());// Inicializar la lista de tareas para el procesador si no existe
-
+                    p.agregarTarea(tareaActual);
                    asignacionParcial.get(p).add(tareaActual);// Agregar la tarea actual a la lista de tareas del procesador
-                    System.out.println("Asignacion Parcial: " + asignacionParcial);
-
-                   //mejorTiempoParcial += tareaActual.getTpo_ejecucion();
 
                     int tiempoProcesadorActual = p.getTiempoTotal();
-
 
                     int nuevoMejorTiempoParcial = Math.max(mejorTiempoParcial, tiempoProcesadorActual);// Actualiza el mejor tiempo parcial
                    //backtrack
@@ -83,7 +76,6 @@ public class Backtracking {
                     }
                    //deshacer cambios
                    asignacionParcial.get(p).remove(tareaActual);
-                   //mejorTiempoParcial -= tareaActual.getTpo_ejecucion();
                    p.quitarTarea(tareaActual);
                }
             }

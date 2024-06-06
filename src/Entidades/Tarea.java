@@ -55,8 +55,24 @@ public class Tarea {
         this.prioridad = prioridad;
     }
 
+
     @Override
     public String toString() {
-        return id_tarea;
+        return "Tarea{" +
+                "id_tarea='" + id_tarea + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", tpo_ejecucion=" + tpo_ejecucion +
+                ", es_critica=" + es_critica +
+                ", prioridad=" + prioridad +
+                '}';
     }
+
+    //para leerlo mejor
+  /*  @Override
+    public String toString() {
+        return "Tarea{" +
+                "id_tarea='" + id_tarea + '\'' +
+                '}'
+                ;
+    }*/
 }
