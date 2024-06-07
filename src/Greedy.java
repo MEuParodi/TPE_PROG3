@@ -13,7 +13,7 @@ public class Greedy {
     private Integer mejorTiempo;
     private int contadorCandidatos;
 
-    public Greedy(String pathProcesadores, String pathTareas, Integer x){
+    public Greedy(String pathProcesadores, String pathTareas, Integer x) {
         this.contadorCandidatos = 0;
         this.mejorTiempo = 0;
         this.mejorAsignacion = new HashMap<>();
@@ -28,10 +28,11 @@ public class Greedy {
             }
         }
     }
+
     /*Ordenamos las tareas de mayor a menor por tiempo de ejecución, y las asignamos al procesador que tiene el
-    * menor tiempo de procesamiento y puede agregar esa tarea. */
+     * menor tiempo de procesamiento y puede agregar esa tarea. */
     public void buscarMejorSolucion() {
-        int contadorTareasAsignadas=0;
+        int contadorTareasAsignadas = 0;
         // Inicializar la asignación de tareas a procesadores
         for (Procesador p : procesadores) {
             mejorAsignacion.put(p, new ArrayList<>());
@@ -39,9 +40,9 @@ public class Greedy {
         // Ordenar las tareas de mayor a menor tiempo de ejecución
         tareas.sort((t1, t2) -> t2.getTpo_ejecucion() - t1.getTpo_ejecucion());//calcula diferencia de tiempo si es positivo t2 es mayor
 
-        for(Tarea tarea: tareas){
-            Procesador p=this.buscarProcesadorConMenorTiempoYDisponible(tarea);
-            if(p.puedoAgregarTarea(tarea)){
+        for (Tarea tarea : tareas) {
+            Procesador p = this.buscarProcesadorConMenorTiempoYDisponible(tarea);
+            if (p.puedoAgregarTarea(tarea)) {
                 p.agregarTarea(tarea);
                 mejorAsignacion.get(p).add(tarea);
                 contadorTareasAsignadas++;
@@ -50,14 +51,14 @@ public class Greedy {
         // Calcular el mejor tiempo
         this.calcularMejorTiempo();
 
-        if(contadorTareasAsignadas==this.tareas.size()){
+        if (contadorTareasAsignadas == this.tareas.size()) {
             this.imprimirSolucion();
-        }
-        else {
+        } else {
             this.imprimirMensajeError();
         }
     }
-    public void calcularMejorTiempo(){
+
+    public void calcularMejorTiempo() {
         for (Procesador p : procesadores) {
             int tiempoProcesador = p.getTiempoTotal();
             if (tiempoProcesador > this.mejorTiempo) {
@@ -65,13 +66,14 @@ public class Greedy {
             }
         }
     }
-    public Procesador buscarProcesadorConMenorTiempoYDisponible(Tarea t){
-        int menorTiempo=Integer.MAX_VALUE;
-        Procesador procesadorConMenorTiempo=null;
-        for (Procesador p : procesadores){
-            if(p.getTiempoTotal()<menorTiempo && p.puedoAgregarTarea(t)){
-                menorTiempo=p.getTiempoTotal();
-                procesadorConMenorTiempo=p;
+
+    public Procesador buscarProcesadorConMenorTiempoYDisponible(Tarea t) {
+        int menorTiempo = Integer.MAX_VALUE;
+        Procesador procesadorConMenorTiempo = null;
+        for (Procesador p : procesadores) {
+            if (p.getTiempoTotal() < menorTiempo && p.puedoAgregarTarea(t)) {
+                menorTiempo = p.getTiempoTotal();
+                procesadorConMenorTiempo = p;
                 contadorCandidatos++;
             }
         }
@@ -83,7 +85,8 @@ public class Greedy {
         System.out.println("Mejor Asignación: " + mejorAsignacion);
         System.out.println("Cantidad de candidatos considerados: " + contadorCandidatos);
     }
-    private void imprimirMensajeError(){
+
+    private void imprimirMensajeError() {
         System.out.println("No existe asignación posible");
     }
 }

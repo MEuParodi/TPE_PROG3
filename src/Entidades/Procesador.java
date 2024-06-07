@@ -8,7 +8,7 @@ public class Procesador {
     private String codigo;
     private boolean refrigerado;
     private int anio;
-    private List<Tarea>tareas;
+    private List<Tarea> tareas;
     private Integer tiempoTotal;
     private Integer cantCriticas;
     private Integer x; //tiempo limite para no refrig
@@ -19,7 +19,7 @@ public class Procesador {
         this.codigo = codigo;
         this.refrigerado = refrigerado;
         this.anio = anio;
-        this.tareas=new ArrayList<>();
+        this.tareas = new ArrayList<>();
         this.cantCriticas = 0;
         this.tiempoTotal = 0;
     }
@@ -32,21 +32,22 @@ public class Procesador {
         return new ArrayList<>(this.tareas);
     }
 
-    public void agregarTarea(Tarea t){
-        if(this.puedoAgregarTarea(t)){
+    public void agregarTarea(Tarea t) {
+        if (this.puedoAgregarTarea(t)) {
             this.tareas.add(t);
-            if(t.Es_critica()){
+            if (t.Es_critica()) {
                 cantCriticas++;
             }
-            this.tiempoTotal+=t.getTpo_ejecucion();
+            this.tiempoTotal += t.getTpo_ejecucion();
         }
     }
-    public boolean puedoAgregarTarea(Tarea t){
-        if(t.Es_critica() && this.getCantDeCriticas()>=2) {
+
+    public boolean puedoAgregarTarea(Tarea t) {
+        if (t.Es_critica() && this.getCantDeCriticas() >= 2) {
             return false;
         }
-        if(!this.refrigerado) {
-            if (tiempoTotal+t.getTpo_ejecucion()>x){//<=
+        if (!this.refrigerado) {
+            if (tiempoTotal + t.getTpo_ejecucion() > x) {//<=
                 return false;
             }
         }
@@ -54,26 +55,27 @@ public class Procesador {
 
     }
 
-    public void quitarTarea(Tarea t){
+    public void quitarTarea(Tarea t) {
         this.tareas.remove(t);
-        this.tiempoTotal-=t.getTpo_ejecucion();
-        if(t.Es_critica()){
-            cantCriticas --;
+        this.tiempoTotal -= t.getTpo_ejecucion();
+        if (t.Es_critica()) {
+            cantCriticas--;
         }
     }
 
-    public void setXParaNoRefrigerado(Integer x){
-        this.x=x;
+    public void setXParaNoRefrigerado(Integer x) {
+        this.x = x;
     }
-    public boolean puedoAgregarPorTiempo(int tiempoTarea){
-            if (this.tiempoTotal+tiempoTarea>this.x){
-                return false;
-            }
+
+    public boolean puedoAgregarPorTiempo(int tiempoTarea) {
+        if (this.tiempoTotal + tiempoTarea > this.x) {
+            return false;
+        }
 
         return true;
     }
 
-    public Integer getCantDeCriticas(){
+    public Integer getCantDeCriticas() {
         return this.cantCriticas;
     }
 
