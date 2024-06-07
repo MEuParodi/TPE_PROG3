@@ -21,8 +21,6 @@ public class Backtracking {
         HashMap<String, Procesador> procesadoresReader = reader.readProcessors(pathProcesadores);
         HashMap<String, Tarea> tareasReader = reader.readTasks(pathTareas);
         this.tareas = new ArrayList<>(tareasReader.values());
-       /* for (Tarea t : tareas)
-            System.out.println(t.toString());*/
         this.procesadores = new ArrayList<>(procesadoresReader.values());
         for (Procesador p :procesadores) {
             if (!p.isRefrigerado()) {
@@ -45,7 +43,7 @@ public class Backtracking {
 
     private void backtrack(HashMap<Procesador,List<Tarea>> asignacionParcial, Integer mejorTiempoParcial, Integer index){
         //si llegue al final
-        if(index==(tareas.size()) || (todosLosProcesadoresTienen2Criticas() )){
+        if(index==(tareas.size()) || (todosLosProcesadoresTienen2Criticas() )){  //REVISAR ESTE OR
             if (mejorTiempoParcial < this.mejorTiempo){
                 this.mejorTiempo = mejorTiempoParcial;
                 this.mejorAsignacion = new HashMap<>(asignacionParcial);

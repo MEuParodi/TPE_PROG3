@@ -21,8 +21,6 @@ public class Greedy {
         HashMap<String, Procesador> procesadoresReader = reader.readProcessors(pathProcesadores);
         HashMap<String, Tarea> tareasReader = reader.readTasks(pathTareas);
         this.tareas = new ArrayList<>(tareasReader.values());
-       /* for (Tarea t : tareas)
-            System.out.println(t.toString());*/
         this.procesadores = new ArrayList<>(procesadoresReader.values());
         for (Procesador p : procesadores) {
             if (!p.isRefrigerado()) {
@@ -41,7 +39,6 @@ public class Greedy {
         // Ordenar las tareas de mayor a menor tiempo de ejecución
         tareas.sort((t1, t2) -> t2.getTpo_ejecucion() - t1.getTpo_ejecucion());//calcula diferencia de tiempo si es positivo t2 es mayor
 
-        int tiempoMinimo = Integer.MAX_VALUE;
         for(Tarea tarea: tareas){
             Procesador p=this.buscarProcesadorConMenorTiempoYDisponible(tarea);
             if(p.puedoAgregarTarea(tarea)){
