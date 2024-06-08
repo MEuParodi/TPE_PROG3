@@ -13,6 +13,7 @@ public class Backtracking {
     private HashMap<Procesador, List<Tarea>> mejorAsignacion;
     private Integer mejorTiempo;
     private int contadorEstados;
+    private boolean mensajeErrorImpreso;
 
     public Backtracking(String pathProcesadores, String pathTareas, Integer x) {
         this.contadorEstados = 0;
@@ -35,16 +36,17 @@ public class Backtracking {
      * Implementamos una poda, solo se realiza el llamado recursivo a backtrack si el tiempo parcial es menor al
      * mejor tiempo encontrado.  */
 
-    public HashMap<Procesador, List<Tarea>> buscarMejorSolucion() {
+    public void buscarMejorSolucion() {
         HashMap<Procesador, List<Tarea>> asignacionParcial = new HashMap<>();
         Integer mejorTiempoParcial = 0; //mejor tiempo entre todos los p con las tareas asignadas hasta el momento
         backtrack(asignacionParcial, mejorTiempoParcial, 0);
-        return this.mejorAsignacion;
+        this.imprimirSolucion();
+
     }
 
     private void backtrack(HashMap<Procesador, List<Tarea>> asignacionParcial, Integer mejorTiempoParcial, Integer index) {
         //si llegue al final
-        if (index == (tareas.size()) || (todosLosProcesadoresTienen2Criticas())) {  //REVISAR ESTE OR
+        if (index == (tareas.size())) {  //REVISAR ESTE OR
             if (mejorTiempoParcial < this.mejorTiempo) {
                 this.mejorTiempo = mejorTiempoParcial;
                 this.mejorAsignacion = new HashMap<>(asignacionParcial);
@@ -54,6 +56,13 @@ public class Backtracking {
                     List<Tarea> tareas = new ArrayList<>(entry.getValue());
                     this.mejorAsignacion.put(procesador, tareas);
                 }
+
+            }
+
+        } else if (todosLosProcesadoresTienen2Criticas()) {
+            if (!mensajeErrorImpreso) {
+                this.imprimirMensajeError();
+                mensajeErrorImpreso = true; // Marca el mensaje como impreso
             }
         } else {
             Tarea tareaActual = this.tareas.get(index);
@@ -83,7 +92,7 @@ public class Backtracking {
     private boolean todosLosProcesadoresTienen2Criticas() {
         int cantDeProcesadoresConMasDe2Criticas = 0;
         for (Procesador p : procesadores) {
-            if (p.getCantDeCriticas() > 2) {
+            if (p.getCantDeCriticas() == 2) {
                 cantDeProcesadoresConMasDe2Criticas++;
             }
         }
@@ -97,5 +106,9 @@ public class Backtracking {
         System.out.println("Mínimo Tiempo Máximo: " + mejorTiempo);
         System.out.println("Mejor Asignación: " + mejorAsignacion);
         System.out.println("Cantidad de estados generados: " + contadorEstados);
+    }
+
+    private void imprimirMensajeError() {
+        System.out.println("No existe asignación posible");
     }
 }

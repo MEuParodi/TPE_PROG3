@@ -43,7 +43,7 @@ public class Procesador {
     }
 
     public boolean puedoAgregarTarea(Tarea t) {
-        if (t.Es_critica() && this.getCantDeCriticas() >= 2) {
+        if (t.Es_critica() && this.getCantDeCriticas() == 2) {
             return false;
         }
         if (!this.refrigerado) {

@@ -42,7 +42,7 @@ public class Greedy {
 
         for (Tarea tarea : tareas) {
             Procesador p = this.buscarProcesadorConMenorTiempoYDisponible(tarea);
-            if (p.puedoAgregarTarea(tarea)) {
+            if (p != null && p.puedoAgregarTarea(tarea)) {
                 p.agregarTarea(tarea);
                 mejorAsignacion.get(p).add(tarea);
                 contadorTareasAsignadas++;
